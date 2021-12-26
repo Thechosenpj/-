@@ -8,7 +8,7 @@ import Viewer from "v-viewer"
 Vue.use(element)
 Vue.use(Viewer)
 Viewer.setDefaults({
-    "inline": false, //是否采用inline模式 这个模式很奇怪 进去就展示。
+    "inline": true, //是否采用inline模式 这个模式很奇怪 进去就展示。
     "button": true, // 是否显示右上角关闭按钮
     "navbar": true,// 是否展示下方的小图导航
     "title": false,// 是否显示图片名字

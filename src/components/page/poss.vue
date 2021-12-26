@@ -1,5 +1,5 @@
 <template>
-  <div class="poss">
+  <div class="poss" ref="html2canvas">
     <div>
       <el-row>
         <el-col :span="7" class="poss-order" id="order-list">
@@ -131,15 +131,28 @@
         </el-col>
       </el-row>
     </div>
+    <div class="htmlCanvas">
+      <el-button type="danger" @click="Hcanvas">截图</el-button>
+    </div>
+    <el-dialog :visible.sync="canvasImag" style="width:100%;height:100%">
+      <img :src="imgUrl">
+    </el-dialog>
+    <!-- <div class="jietu" v-if="canvasImag">
+      <img :src="imgUrl">
+    </div> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import html2canvas from 'html2canvas'
 export default {
   name:'poss',
   data() {
     return {
+      imgUrl:"",
+      srcList:[],
+      canvasImag:false,
       showDialog: false,
       tableList:[
         {goodsName:'www',price:'eee',count:'12121',sss:'ppp'},
@@ -287,6 +300,28 @@ export default {
     document.getElementById("order-list").style.height=orderHeight+'px';
   },
   methods:{
+    Hcanvas () {
+      alert('截图')
+      // html2canvas(document.body).then(function(canvas) {
+      //     document.body.appendChild(canvas);
+      // });
+      window.pageYOffset = 0;
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      html2canvas(this.$refs.html2canvas, {
+        // width: 200,
+        // height: 200,
+        backgroundColor: null,
+        useCORS: true // 解决文件跨域问题
+      }).then(canvas => {
+        const url = canvas.toDataURL('image/png') // 生成的图片
+        // 可以上传后端或者直接显示
+        console.log('12', url)
+        // this.srcList.push(url)
+        this.canvasImag = true
+        this.imgUrl = url
+      })   
+    },
     show() {
       alert('微众银行')
       // this.showDialog = true
@@ -364,5 +399,15 @@ export default {
       font-size: 16px;
       padding-left: 10px;
       padding-top:10px;
+   }
+   .htmlCanvas{
+     position: fixed;
+     right: 2px;
+     bottom: 10px;
+   }
+   .jietu{
+    position: absolute;
+    left: 50%;
+    top: 50%;
    }
 </style>
